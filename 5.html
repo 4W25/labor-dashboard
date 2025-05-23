@@ -13,6 +13,7 @@
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
+
   <!-- Navbar -->
   <nav class="main-header navbar navbar-expand navbar-white navbar-light">
     <ul class="navbar-nav">
@@ -20,172 +21,188 @@
         <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="1.html" class="nav-link">首頁</a>
+        <a href="#" class="nav-link">首頁</a>
       </li>
     </ul>
   </nav>
 
-  <!-- Main Sidebar Container -->
+  <!-- Sidebar -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <a href="1.html" class="brand-link">
-      <img src="https://upload.wikimedia.org/wikipedia/zh/thumb/8/83/Taiwan_Semiconductor_Manufacturing_Co_logo.svg/800px-Taiwan_Semiconductor_Manufacturing_Co_logo.svg.png" alt="TSMC Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+      <img src="https://upload.wikimedia.org/wikipedia/zh/thumb/8/83/Taiwan_Semiconductor_Manufacturing_Co_logo.svg/800px-Taiwan_Semiconductor_Manufacturing_Co_logo.svg.png"
+           alt="TSMC Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
       <span class="brand-text font-weight-light">勞動人力資料庫</span>
     </a>
     <div class="sidebar">
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu">
-          <li class="nav-item">
-            <a href="2.html" class="nav-link"><i class="nav-icon fas fa-users"></i><p>人員管理</p></a>
+          <li class="nav-item"><a href="2.html" class="nav-link"><i class="nav-icon fas fa-users"></i><p>人員管理</p></a></li>
+          <li class="nav-item"><a href="4.html" class="nav-link"><i class="nav-icon fas fa-industry"></i><p>廠商管理</p></a></li>
+          <li class="nav-item has-treeview">
+            <a href="#" class="nav-link"><i class="nav-icon fas fa-clipboard-check"></i><p>評鑑管理<i class="right fas fa-angle-left"></i></p></a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item"><a href="#" class="nav-link"><i class="far fa-circle nav-icon"></i><p>廠商評鑑</p></a></li>
+              <li class="nav-item"><a href="#" class="nav-link"><i class="far fa-circle nav-icon"></i><p>人員評鑑</p></a></li>
+            </ul>
           </li>
-          <li class="nav-item">
-            <a href="4.html" class="nav-link"><i class="nav-icon fas fa-industry"></i><p>廠商管理</p></a>
+          <li class="nav-item has-treeview">
+            <a href="#" class="nav-link"><i class="nav-icon fas fa-cogs"></i><p>系統管理<i class="right fas fa-angle-left"></i></p></a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item"><a href="#" class="nav-link"><i class="far fa-circle nav-icon"></i><p>帳號管理</p></a></li>
+              <li class="nav-item"><a href="#" class="nav-link"><i class="far fa-circle nav-icon"></i><p>角色管理</p></a></li>
+              <li class="nav-item"><a href="#" class="nav-link"><i class="far fa-circle nav-icon"></i><p>稽核記錄</p></a></li>
+              <li class="nav-item"><a href="#" class="nav-link"><i class="far fa-circle nav-icon"></i><p>參數設定</p></a></li>
+            </ul>
           </li>
         </ul>
       </nav>
     </div>
   </aside>
 
-  <!-- Content Wrapper -->
+  <!-- Content -->
   <div class="content-wrapper">
-    <div class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1 class="m-0">主承商與次承商關係圖</h1>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <section class="content">
+    <section class="content pt-3">
       <div class="container-fluid">
         <div class="card">
+          <div class="card-header"><h3 class="card-title">主承商與次承商關聯圖</h3></div>
           <div class="card-body">
-            <svg id="network" width="100%" height="600"></svg>
+            <div id="chart" style="width:100%; height:600px;"></div>
+            <div id="legend" class="mt-3"></div>
           </div>
         </div>
       </div>
     </section>
   </div>
+
 </div>
 
 <script>
 const data = {
   nodes: [
-    { id: '主承商', group: 'contractor', size: 1200 },
-    { id: '次承商1', group: 'sub1', size: 500 },
-    { id: '次承商2', group: 'sub2', size: 300 },
-    { id: '次承商3', group: 'sub3', size: 200 },
-    { id: '次承商4', group: 'sub4', size: 150 },
-    { id: '次承商5', group: 'sub5', size: 50 },
-    { id: 'ME1', group: 'sub1', size: 50 },
-    { id: 'IE1', group: 'sub1', size: 200 },
-    { id: 'WT1', group: 'sub1', size: 50 },
-    { id: 'GC1', group: 'sub1', size: 100 },
-    { id: 'CSA1', group: 'sub1', size: 100 },
-    { id: 'GC2', group: 'sub2', size: 100 },
-    { id: 'CSA2', group: 'sub2', size: 200 },
-    { id: 'ME3', group: 'sub3', size: 50 },
-    { id: 'IE3', group: 'sub3', size: 100 },
-    { id: 'WT3', group: 'sub3', size: 50 },
-    { id: 'CSA4', group: 'sub4', size: 150 },
-    { id: 'ME5', group: 'sub5', size: 10 },
-    { id: 'IE5', group: 'sub5', size: 30 },
-    { id: 'WT5', group: 'sub5', size: 10 },
+    { id: "主承商", size: 1200, group: "main" },
+    { id: "次承商1", size: 500, group: "sub" },
+    { id: "次承商2", size: 300, group: "sub" },
+    { id: "次承商3", size: 200, group: "sub" },
+    { id: "次承商4", size: 150, group: "sub" },
+    { id: "次承商5", size: 50, group: "sub" },
+    { id: "ME_1", size: 50, group: "ME" },
+    { id: "IE_1", size: 200, group: "IE" },
+    { id: "WT_1", size: 50, group: "WT" },
+    { id: "GC_1", size: 100, group: "GC" },
+    { id: "CSA_1", size: 100, group: "CSA" },
+    { id: "GC_2", size: 100, group: "GC" },
+    { id: "CSA_2", size: 200, group: "CSA" },
+    { id: "ME_3", size: 50, group: "ME" },
+    { id: "IE_3", size: 100, group: "IE" },
+    { id: "WT_3", size: 50, group: "WT" },
+    { id: "CSA_4", size: 150, group: "CSA" },
+    { id: "ME_5", size: 10, group: "ME" },
+    { id: "IE_5", size: 30, group: "IE" },
+    { id: "WT_5", size: 10, group: "WT" },
   ],
   links: [
-    { source: '主承商', target: '次承商1' },
-    { source: '主承商', target: '次承商2' },
-    { source: '主承商', target: '次承商3' },
-    { source: '主承商', target: '次承商4' },
-    { source: '主承商', target: '次承商5' },
-    { source: '次承商1', target: 'ME1' },
-    { source: '次承商1', target: 'IE1' },
-    { source: '次承商1', target: 'WT1' },
-    { source: '次承商1', target: 'GC1' },
-    { source: '次承商1', target: 'CSA1' },
-    { source: '次承商2', target: 'GC2' },
-    { source: '次承商2', target: 'CSA2' },
-    { source: '次承商3', target: 'ME3' },
-    { source: '次承商3', target: 'IE3' },
-    { source: '次承商3', target: 'WT3' },
-    { source: '次承商4', target: 'CSA4' },
-    { source: '次承商5', target: 'ME5' },
-    { source: '次承商5', target: 'IE5' },
-    { source: '次承商5', target: 'WT5' },
+    { source: "主承商", target: "次承商1" },
+    { source: "主承商", target: "次承商2" },
+    { source: "主承商", target: "次承商3" },
+    { source: "主承商", target: "次承商4" },
+    { source: "主承商", target: "次承商5" },
+    { source: "次承商1", target: "ME_1" },
+    { source: "次承商1", target: "IE_1" },
+    { source: "次承商1", target: "WT_1" },
+    { source: "次承商1", target: "GC_1" },
+    { source: "次承商1", target: "CSA_1" },
+    { source: "次承商2", target: "GC_2" },
+    { source: "次承商2", target: "CSA_2" },
+    { source: "次承商3", target: "ME_3" },
+    { source: "次承商3", target: "IE_3" },
+    { source: "次承商3", target: "WT_3" },
+    { source: "次承商4", target: "CSA_4" },
+    { source: "次承商5", target: "ME_5" },
+    { source: "次承商5", target: "IE_5" },
+    { source: "次承商5", target: "WT_5" }
   ]
 };
 
-const svg = d3.select("#network");
-const width = svg.node().getBoundingClientRect().width;
-const height = +svg.attr("height");
+const colorScale = d3.scaleOrdinal()
+  .domain(["ME", "IE", "WT", "GC", "CSA", "sub", "main"])
+  .range(["#007bff", "#28a745", "#ffc107", "#dc3545", "#6f42c1", "#87CEEB", "#ff5733"]);
+
+const width = document.getElementById("chart").clientWidth;
+const height = 600;
+
+const svg = d3.select("#chart").append("svg")
+  .attr("width", width)
+  .attr("height", height);
 
 const simulation = d3.forceSimulation(data.nodes)
-  .force("link", d3.forceLink(data.links).id(d => d.id).distance(100))
-  .force("charge", d3.forceManyBody().strength(-300))
+  .force("link", d3.forceLink(data.links).id(d => d.id).distance(150))
+  .force("charge", d3.forceManyBody().strength(-400))
   .force("center", d3.forceCenter(width / 2, height / 2));
 
 const link = svg.append("g")
-  .attr("stroke", "#999")
-  .attr("stroke-opacity", 0.6)
-.selectAll("line")
-.data(data.links)
-.enter().append("line")
-  .attr("stroke-width", 1.5);
+  .attr("stroke", "#aaa")
+  .selectAll("line")
+  .data(data.links)
+  .join("line")
+  .attr("stroke-width", 2);
 
 const node = svg.append("g")
-  .attr("stroke", "#fff")
-  .attr("stroke-width", 1.5)
-.selectAll("circle")
-.data(data.nodes)
-.enter().append("circle")
+  .selectAll("circle")
+  .data(data.nodes)
+  .join("circle")
   .attr("r", d => Math.sqrt(d.size) * 3)
-  .attr("fill", d => d.group === 'contractor' ? '#007bff' : d.group.startsWith('sub') ? '#28a745' : '#ffc107')
-  .call(d3.drag()
-      .on("start", dragstarted)
-      .on("drag", dragged)
-      .on("end", dragended));
+  .attr("fill", d => colorScale(d.group))
+  .call(drag(simulation));
 
 const label = svg.append("g")
   .selectAll("text")
   .data(data.nodes)
-  .enter().append("text")
+  .join("text")
   .text(d => d.id)
-  .attr("font-size", "10px")
-  .attr("dy", 3);
+  .attr("font-size", "12px")
+  .attr("text-anchor", "middle")
+  .attr("dy", -10);
 
 simulation.on("tick", () => {
-  link
-      .attr("x1", d => d.source.x)
+  link.attr("x1", d => d.source.x)
       .attr("y1", d => d.source.y)
       .attr("x2", d => d.target.x)
       .attr("y2", d => d.target.y);
-
-  node
-      .attr("cx", d => d.x)
-      .attr("cy", d => d.y);
-
-  label
-      .attr("x", d => d.x + 5)
-      .attr("y", d => d.y);
+  node.attr("cx", d => d.x).attr("cy", d => d.y);
+  label.attr("x", d => d.x).attr("y", d => d.y);
 });
 
-function dragstarted(event, d) {
-  if (!event.active) simulation.alphaTarget(0.3).restart();
-  d.fx = d.x;
-  d.fy = d.y;
+function drag(simulation) {
+  return d3.drag()
+    .on("start", event => { if (!event.active) simulation.alphaTarget(0.3).restart(); event.subject.fx = event.subject.x; event.subject.fy = event.subject.y; })
+    .on("drag", event => { event.subject.fx = event.x; event.subject.fy = event.y; })
+    .on("end", event => { if (!event.active) simulation.alphaTarget(0); event.subject.fx = null; event.subject.fy = null; });
 }
 
-function dragged(event, d) {
-  d.fx = event.x;
-  d.fy = event.y;
-}
+// 加上圖例
+const legendData = ["ME", "IE", "WT", "GC", "CSA"];
+const legend = d3.select("#legend").append("svg")
+  .attr("width", 500)
+  .attr("height", 40);
 
-function dragended(event, d) {
-  if (!event.active) simulation.alphaTarget(0);
-  d.fx = null;
-  d.fy = null;
-}
+legend.selectAll("circle")
+  .data(legendData)
+  .enter()
+  .append("circle")
+  .attr("cx", (d, i) => i * 100 + 20)
+  .attr("cy", 20)
+  .attr("r", 10)
+  .attr("fill", d => colorScale(d));
+
+legend.selectAll("text")
+  .data(legendData)
+  .enter()
+  .append("text")
+  .attr("x", (d, i) => i * 100 + 35)
+  .attr("y", 25)
+  .text(d => d)
+  .attr("font-size", "14px");
 </script>
+
 </body>
 </html>
