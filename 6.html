@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>系統選擇</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #002147; /* 台積電深藍 */
+      color: #fff;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .card {
+      background-color: #fff;
+      color: #333;
+      border: none;
+      border-radius: 1rem;
+      transition: transform 0.3s ease;
+    }
+    .card:hover {
+      transform: scale(1.05);
+    }
+    .card i {
+      font-size: 3rem;
+      color: #dc3545; /* 台積紅 */
+    }
+    .card-title {
+      font-size: 1.5rem;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container text-center">
+    <h2 class="mb-5">請選擇要進入的系統</h2>
+    <div class="row justify-content-center">
+      <div class="col-md-3 mx-3">
+        <a href="1.html" class="text-decoration-none">
+          <div class="card p-4 shadow-sm">
+            <i class="fas fa-users-cog"></i>
+            <h5 class="card-title">人員管理</h5>
+          </div>
+        </a>
+      </div>
+      <div class="col-md-3 mx-3">
+        <a href="#" class="text-decoration-none">
+          <div class="card p-4 shadow-sm">
+            <i class="fas fa-id-card-alt"></i>
+            <h5 class="card-title">製證管理</h5>
+          </div>
+        </a>
+      </div>
+      <div class="col-md-3 mx-3">
+        <a href="#" class="text-decoration-none">
+          <div class="card p-4 shadow-sm">
+            <i class="fas fa-heartbeat"></i>
+            <h5 class="card-title">健康管理</h5>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
