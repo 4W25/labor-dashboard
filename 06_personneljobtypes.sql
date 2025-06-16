@@ -1,0 +1,10 @@
+CREATE TABLE PersonnelJobTypes (
+    PersonnelJobTypeID INT PRIMARY KEY AUTO_INCREMENT,
+    PersonnelID INT NOT NULL,
+    JobTypeID INT NOT NULL,
+    IsPrimary BOOLEAN DEFAULT FALSE,
+    ExperienceYears INT,
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UpdatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    UNIQUE KEY uq_personnel_jobtype (PersonnelID, JobTypeID)
+);
