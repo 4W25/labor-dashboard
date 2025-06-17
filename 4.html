@@ -314,5 +314,64 @@
     }
   });
 </script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mainContractorSelectElement = document.getElementById('mainContractorSelect');
+
+    if (mainContractorSelectElement) {
+        // Fetch companies and populate the dropdown
+        fetch('/api/companies')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok: ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(companies => {
+                mainContractorSelectElement.innerHTML = ''; // Clear existing options
+
+                const defaultOption = document.createElement('option');
+                defaultOption.value = '';
+                defaultOption.textContent = '--- 所有廠商 ---';
+                mainContractorSelectElement.appendChild(defaultOption);
+
+                if (Array.isArray(companies)) {
+                    companies.forEach(company => {
+                        const option = document.createElement('option');
+                        // Assuming DTO has 'id' and 'name'. Adjust if properties are companyId, companyName etc.
+                        option.value = company.id;
+                        option.textContent = company.name;
+                        mainContractorSelectElement.appendChild(option);
+                    });
+                } else {
+                    console.error("Fetched data is not an array:", companies);
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching main contractors:', error);
+                // Optionally, disable the dropdown or show an error message
+                mainContractorSelectElement.innerHTML = '<option value="">無法載入廠商</option>';
+                mainContractorSelectElement.disabled = true;
+            });
+
+        // Add event listener for selection changes
+        mainContractorSelectElement.addEventListener('change', function(event) {
+            const selectedCompanyId = event.target.value;
+            console.log('Main contractor selected ID:', selectedCompanyId);
+
+            // Store selectedCompanyId globally if needed by other scripts not part of this function scope
+            // window.selectedMainContractorId = selectedCompanyId;
+
+            // Placeholder for triggering updates based on selection
+            // For example: if (selectedCompanyId) { fetchSubContractors(selectedCompanyId); updateDashboardStats(selectedCompanyId); }
+            // else { clearSubContractors(); resetDashboardStatsToOverall(); }
+            // These functions (fetchSubContractors, updateDashboardStats, etc.) would be defined elsewhere
+            // or implemented in subsequent steps.
+        });
+    } else {
+        console.error('Main contractor select element not found (id="mainContractorSelect").');
+    }
+});
+</script>
 </body>
 </html>

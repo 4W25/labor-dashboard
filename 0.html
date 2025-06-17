@@ -44,20 +44,75 @@
       <img src="https://upload.wikimedia.org/wikipedia/zh/thumb/8/83/Taiwan_Semiconductor_Manufacturing_Co_logo.svg/800px-Taiwan_Semiconductor_Manufacturing_Co_logo.svg.png" alt="TSMC Logo">
     </div>
     <h4 class="text-center mb-4">系統登入</h4>
-    <form action="6.html" method="get">
+    <form id="loginForm">
       <div class="form-group">
         <label for="username">帳號</label>
-        <input type="text" class="form-control" id="username" placeholder="請輸入帳號">
+        <input type="text" class="form-control" id="username" placeholder="請輸入帳號" required>
       </div>
       <div class="form-group">
         <label for="password">密碼</label>
-        <input type="password" class="form-control" id="password" placeholder="請輸入密碼">
+        <input type="password" class="form-control" id="password" placeholder="請輸入密碼" required>
       </div>
       <button type="submit" class="btn btn-primary btn-block">登入</button>
     </form>
+    <div id="loginError" style="color: red; margin-top: 10px; text-align: center;"></div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const loginForm = document.getElementById('loginForm');
+      const loginError = document.getElementById('loginError');
+
+      if (loginForm) {
+        loginForm.addEventListener('submit', function(event) {
+          event.preventDefault();
+          loginError.textContent = ''; // Clear previous errors
+
+          const usernameInput = document.getElementById('username');
+          const passwordInput = document.getElementById('password');
+
+          // HTML5 'required' attribute handles this, but double-check can be kept if desired
+          // if (!usernameInput.value || !passwordInput.value) {
+          //   loginError.textContent = '帳號和密碼欄位都必填';
+          //   return;
+          // }
+
+          const username = usernameInput.value;
+          const password = passwordInput.value;
+
+          fetch('/api/auth/login', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ username: username, password: password })
+          })
+          .then(response => {
+            if (response.ok) { // status 200-299
+              window.location.href = '6.html';
+            } else {
+              return response.text().then(text => {
+                 // Try to parse as JSON if error message is expected in JSON format
+                 try {
+                   const errorData = JSON.parse(text);
+                   loginError.textContent = '登入失敗: ' + (errorData.message || errorData.error || text);
+                 } catch (e) {
+                   loginError.textContent = '登入失敗: ' + (text || response.statusText);
+                 }
+              });
+            }
+          })
+          .catch(error => {
+            console.error('Login API call failed:', error);
+            loginError.textContent = '登入時發生錯誤，請稍後再試';
+          });
+        });
+      } else {
+        console.error("Login form not found. Check ID 'loginForm'.");
+      }
+    });
+  </script>
 </body>
 </html>

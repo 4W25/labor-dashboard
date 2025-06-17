@@ -80,7 +80,7 @@
           <div class="col-lg-4 col-6">
             <div class="small-box bg-info">
               <div class="inner">
-                <h3>1200</h3>
+                <h3 id="statsConstructionPersonnel">1200</h3>
                 <p>施工人員</p>
               </div>
               <div class="icon">
@@ -91,7 +91,7 @@
           <div class="col-lg-4 col-6">
             <div class="small-box bg-success">
               <div class="inner">
-                <h3>45</h3>
+                <h3 id="statsMainContractors">45</h3>
                 <p>主承商</p>
               </div>
               <div class="icon">
@@ -102,7 +102,7 @@
           <div class="col-lg-4 col-6">
             <div class="small-box bg-warning">
               <div class="inner">
-                <h3>130</h3>
+                <h3 id="statsSubContractors">130</h3>
                 <p>次承商</p>
               </div>
               <div class="icon">
@@ -141,6 +141,8 @@
   </div>
 </div>
 
+<!--
+<!--
 <script>
   const ctx = document.getElementById('jobPieChart').getContext('2d');
   const jobPieChart = new Chart(ctx, {
@@ -178,6 +180,140 @@
         }
       }
     }
+  });
+</script>
+-->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    fetch('/api/dashboard/stats')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok ' + response.statusText);
+        }
+        return response.json();
+      })
+      .then(data => {
+        document.getElementById('statsConstructionPersonnel').textContent = data.constructionPersonnel;
+        document.getElementById('statsMainContractors').textContent = data.mainContractors;
+        document.getElementById('statsSubContractors').textContent = data.subContractors;
+      })
+      .catch(error => {
+        console.error('Error fetching stats:', error);
+      });
+
+    // New script for jobPieChart
+    const ctxJobPie = document.getElementById('jobPieChart').getContext('2d');
+    let jobPieChartInstance;
+    const defaultPieColors = ['#007bff', '#28a745', '#ffc107', '#dc3545', '#6f42c1', '#001f3f', '#39CCCC', '#3D9970', '#FFDC00', '#F012BE'];
+
+    fetch('/api/dashboard/charts/job-distribution')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok for job distribution: ' + response.statusText);
+        }
+        return response.json();
+      })
+      .then(apiData => {
+        // Ensure apiData has the expected structure
+        const labels = apiData.labels || [];
+        const dataPoints = (apiData.datasets && apiData.datasets[0] && apiData.datasets[0].data) ? apiData.datasets[0].data : [];
+        const backgroundColors = (apiData.datasets && apiData.datasets[0] && apiData.datasets[0].backgroundColor) ? apiData.datasets[0].backgroundColor : defaultPieColors;
+
+        jobPieChartInstance = new Chart(ctxJobPie, {
+          type: 'pie',
+          data: {
+            labels: labels,
+            datasets: [{
+              data: dataPoints,
+              backgroundColor: backgroundColors
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+          }
+        });
+      })
+      .catch(error => {
+        console.error('Error fetching job distribution data:', error);
+        // Optionally, display an error message or a default state on the chart
+        jobPieChartInstance = new Chart(ctxJobPie, {
+          type: 'pie',
+          data: {
+            labels: ['Error loading data'],
+            datasets: [{
+              data: [1],
+              backgroundColor: ['#dc3545']
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+          }
+        });
+      });
+
+    // New script for ageBarChart
+    const ctxAgeBar = document.getElementById('ageBarChart').getContext('2d');
+    let ageBarChartInstance;
+
+    fetch('/api/dashboard/charts/age-distribution')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok for age distribution: ' + response.statusText);
+        }
+        return response.json();
+      })
+      .then(apiData => {
+        // Ensure apiData has the expected structure
+        const labels = apiData.labels || [];
+        const datasets = (apiData.datasets && apiData.datasets[0]) ? [{
+          label: apiData.datasets[0].label || '人數',
+          data: apiData.datasets[0].data || [],
+          backgroundColor: apiData.datasets[0].backgroundColor || '#17a2b8'
+        }] : [{ label: '人數', data: [], backgroundColor: '#17a2b8' }];
+
+        ageBarChartInstance = new Chart(ctxAgeBar, {
+          type: 'bar',
+          data: {
+            labels: labels,
+            datasets: datasets
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+      })
+      .catch(error => {
+        console.error('Error fetching age distribution data:', error);
+        // Optionally, display an error message or a default state on the chart
+        ageBarChartInstance = new Chart(ctxAgeBar, {
+          type: 'bar',
+          data: {
+            labels: ['Error loading data'],
+            datasets: [{
+              label: 'Error',
+              data: [1],
+              backgroundColor: ['#dc3545']
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+      });
   });
 </script>
 </body>

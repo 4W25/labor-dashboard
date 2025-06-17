@@ -120,18 +120,20 @@
                   <th>次承商</th>
                   <th>職務類別</th>
                   <th>關鍵工種</th>
+                  <th>狀態</th>
                   <th>台積年資</th>
                   <th>專業證照</th>
                   <th>健康分級</th>
                   <th>安全履歷</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr><td> <a href="3.html">王小明</a></td><td>W12345</td><td>宏成公司</td><td>遠東企業</td><td>電機技術員</td><td>ME</td><td>5年</td><td>高壓電證照</td><td>3</td><td>良好</td></tr>
-                <tr><td>陳美麗</td><td>M54321</td><td>建億公司</td><td>大同企業</td><td>施工助理</td><td>WT</td><td>2年</td><td>焊接證照</td><td>2</td><td>優良</td></tr>
-                <tr><td>李志強</td><td>L98765</td><td>盛達建設</td><td>佳能企業</td><td>工地主任</td><td>GC</td><td>10年</td><td>營造業乙級</td><td>4</td><td>普通</td></tr>
-                <tr><td>張玉芬</td><td>Y24680</td><td>宏達電機</td><td>京元電子</td><td>品保主管</td><td>IE</td><td>7年</td><td>品質工程師</td><td>1</td><td>良好</td></tr>
-                <tr><td>黃建國</td><td>H13579</td><td>新光營造</td><td>聯華電子</td><td>現場監工</td><td>CSA</td><td>3年</td><td>高空作業證照</td><td>5</td><td>普通</td></tr>
+              <tbody id="personnelTableBody">
+                <!-- Static data will be cleared by JavaScript -->
+                <tr><td> <a href="3.html">王小明</a></td><td>W12345</td><td>宏成公司</td><td>遠東企業</td><td>電機技術員</td><td>ME</td><td>良好</td><td>5年</td><td>高壓電證照</td><td>3</td><td>良好</td></tr>
+                <tr><td>陳美麗</td><td>M54321</td><td>建億公司</td><td>大同企業</td><td>施工助理</td><td>WT</td><td>優良</td><td>2年</td><td>焊接證照</td><td>2</td><td>優良</td></tr>
+                <tr><td>李志強</td><td>L98765</td><td>盛達建設</td><td>佳能企業</td><td>工地主任</td><td>GC</td><td>普通</td><td>10年</td><td>營造業乙級</td><td>4</td><td>普通</td></tr>
+                <tr><td>張玉芬</td><td>Y24680</td><td>宏達電機</td><td>京元電子</td><td>品保主管</td><td>IE</td><td>良好</td><td>7年</td><td>品質工程師</td><td>1</td><td>良好</td></tr>
+                <tr><td>黃建國</td><td>H13579</td><td>新光營造</td><td>聯華電子</td><td>現場監工</td><td>CSA</td><td>普通</td><td>3年</td><td>高空作業證照</td><td>5</td><td>普通</td></tr>
               </tbody>
             </table>
           </div>
@@ -141,5 +143,104 @@
     </section>
   </div>
 </div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const tableBody = document.getElementById('personnelTableBody');
+    if (!tableBody) {
+        console.error('Personnel table body not found!');
+        return;
+    }
+
+    fetch('/api/personnel')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok: ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(personnelList => {
+            tableBody.innerHTML = ''; // Clear existing static rows
+            if (!Array.isArray(personnelList)) {
+                console.error("Expected an array of personnel, but received:", personnelList);
+                // Display error in table or a dedicated error div
+                const row = tableBody.insertRow();
+                const cell = row.insertCell();
+                cell.colSpan = 11; // Adjusted colspan for new column
+                cell.textContent = '無法載入人員資料，格式錯誤。';
+                cell.style.textAlign = 'center';
+                return;
+            }
+            if (personnelList.length === 0) {
+                const row = tableBody.insertRow();
+                const cell = row.insertCell();
+                cell.colSpan = 11; // Adjusted colspan
+                cell.textContent = '目前無人員資料。';
+                cell.style.textAlign = 'center';
+                return;
+            }
+
+            personnelList.forEach(personnel => {
+                const row = tableBody.insertRow();
+
+                // Name (with link)
+                let cell = row.insertCell();
+                const nameLink = document.createElement('a');
+                nameLink.href = `3.html?id=${personnel.personnelId}`;
+                nameLink.textContent = personnel.name || 'N/A';
+                cell.appendChild(nameLink);
+
+                // Work ID
+                cell = row.insertCell();
+                cell.textContent = personnel.workId || 'N/A';
+
+                // Main Contractor
+                cell = row.insertCell();
+                cell.textContent = personnel.mainCompanyName || 'N/A';
+
+                // Sub Contractor
+                cell = row.insertCell();
+                cell.textContent = personnel.subCompanyName || 'N/A';
+
+                // 職務類別 (Not in DTO)
+                cell = row.insertCell();
+                cell.textContent = 'N/A';
+
+                // Key Job Type
+                cell = row.insertCell();
+                cell.textContent = personnel.primaryJobTypeName || 'N/A';
+
+                // Status
+                cell = row.insertCell();
+                cell.textContent = personnel.currentStatus || 'N/A';
+
+                // 台積年資 (Not in DTO)
+                cell = row.insertCell();
+                cell.textContent = 'N/A';
+
+                // 專業證照 (Not in DTO)
+                cell = row.insertCell();
+                cell.textContent = 'N/A';
+
+                // 健康分級 (Not in DTO)
+                cell = row.insertCell();
+                cell.textContent = 'N/A';
+
+                // 安全履歷 (Not in DTO)
+                cell = row.insertCell();
+                cell.textContent = 'N/A';
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching personnel list:', error);
+            tableBody.innerHTML = ''; // Clear existing static rows before showing error
+            const row = tableBody.insertRow();
+            const cell = row.insertCell();
+            cell.colSpan = 11; // Adjusted colspan
+            cell.textContent = '載入人員資料時發生錯誤: ' + error.message;
+            cell.style.textAlign = 'center';
+            cell.style.color = 'red';
+        });
+});
+</script>
 </body>
 </html>

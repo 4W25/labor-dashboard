@@ -67,50 +67,72 @@
         <!-- 第一列：人員基本資料 -->
         <div class="card">
           <div class="card-header"><h3 class="card-title">人員基本資料</h3></div>
-          <div class="card-body row">
-            <div class="col-md-6">
-              <p>姓名：王小明 <span class="badge badge-danger">新人</span></p>
-              <p>工作號：W12345</p>
-              <p>主承商：宏成公司</p>
-              <p>次承商：遠東企業</p>
-              <p>職務類別：電機技術員</p>
+          <div class="card-body"> <!-- Removed .row from here, will add it inside -->
+            <div class="row"> <!-- Added a new .row for overall structure -->
+              <div class="col-md-2 text-center"> <!-- Photo column -->
+                <img id="personnelProfilePhoto" src="https://via.placeholder.com/120" alt="Profile Photo" class="img-fluid rounded-circle mb-3" style="width: 120px; height: 120px; object-fit: cover;">
+              </div>
+              <div class="col-md-5"> <!-- Left column for details -->
+                <p>姓名：<span id="personnelName"></span> <span id="personnelStatusBadge" class="badge"></span></p>
+                <p>工作號：<span id="personnelWorkId"></span></p>
+                <p>主承商：<span id="personnelMainCompany"></span></p>
+                <p>次承商：<span id="personnelSubCompany"></span></p>
+                <p>職務類別：<span id="personnelJobTitle"></span></p>
+                <p>身分證號：<span id="personnelIdNumber"></span></p>
+                <p>部門：<span id="personnelDepartment"></span></p>
+                <p>目前狀態：<span id="personnelCurrentStatus"></span></p>
+                <p>台積入廠日：<span id="personnelTsmcStartDate"></span></p>
+              </div>
+              <div class="col-md-5"> <!-- Right column for more details -->
+                <p>性別：<span id="personnelGender"></span></p>
+                <p>出生日期：<span id="personnelDateOfBirth"></span> (年齡：<span id="personnelAge"></span>)</p>
+                <p>國籍：<span id="personnelNationality"></span></p>
+                <p>本人電話：<span id="personnelContactNumber"></span></p>
+                <p>本人郵箱：<span id="personnelEmail"></span></p>
+                <p>住址：<span id="personnelAddress"></span></p>
+                <p>血型：<span id="personnelBloodType"></span></p>
+                <p>緊急聯絡人：<span id="personnelEmergencyContactName"></span></p>
+                <p>緊急聯絡人電話：<span id="personnelEmergencyContactPhone"></span></p>
+                <p>雇用性質：<span id="personnelEmploymentType"></span></p>
+                <p>勞安記錄：<span id="personnelSafetyRecordSummary"></span></p>
+                <p>備註：<span id="personnelRemarks"></span></p>
+              </div>
             </div>
-            <div class="col-md-6">
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="info-box">
-                    <span class="info-box-icon bg-info"><i class="fas fa-clock"></i></span>
-                    <div class="info-box-content">
-                      <span class="info-box-text">台積年資</span>
-                      <span class="info-box-number">85 天</span>
-                    </div>
+            <hr> <!-- Separator before info boxes -->
+            <div class="row"> <!-- New row for info boxes -->
+              <div class="col-md-3 col-sm-6 col-12">
+                <div class="info-box">
+                  <span class="info-box-icon bg-info"><i class="fas fa-clock"></i></span>
+                  <div class="info-box-content">
+                    <span class="info-box-text">台積年資</span>
+                    <span class="info-box-number" id="personnelSeniority"></span>
                   </div>
                 </div>
-                <div class="col-md-6">
-                  <div class="info-box">
-                    <span class="info-box-icon bg-success"><i class="fas fa-certificate"></i></span>
-                    <div class="info-box-content">
-                      <span class="info-box-text">有效證照數</span>
-                      <span class="info-box-number">3</span>
-                    </div>
+              </div>
+              <div class="col-md-3 col-sm-6 col-12">
+                <div class="info-box">
+                  <span class="info-box-icon bg-success"><i class="fas fa-certificate"></i></span>
+                  <div class="info-box-content">
+                    <span class="info-box-text">有效證照數</span>
+                    <span class="info-box-number" id="personnelCertsCount"></span>
                   </div>
                 </div>
-                <div class="col-md-6">
-                  <div class="info-box">
-                    <span class="info-box-icon bg-warning"><i class="fas fa-heartbeat"></i></span>
-                    <div class="info-box-content">
-                      <span class="info-box-text">健康分級</span>
-                      <span class="info-box-number">2</span>
-                    </div>
+              </div>
+              <div class="col-md-3 col-sm-6 col-12">
+                <div class="info-box">
+                  <span class="info-box-icon bg-warning"><i class="fas fa-heartbeat"></i></span>
+                  <div class="info-box-content">
+                    <span class="info-box-text">健康分級</span>
+                    <span class="info-box-number" id="personnelHealthGrade"></span>
                   </div>
                 </div>
-                <div class="col-md-6">
-                  <div class="info-box">
-                    <span class="info-box-icon bg-danger"><i class="fas fa-exclamation-triangle"></i></span>
-                    <div class="info-box-content">
-                      <span class="info-box-text">安全事件數</span>
-                      <span class="info-box-number">3</span>
-                    </div>
+              </div>
+              <div class="col-md-3 col-sm-6 col-12">
+                <div class="info-box">
+                  <span class="info-box-icon bg-danger"><i class="fas fa-exclamation-triangle"></i></span>
+                  <div class="info-box-content">
+                    <span class="info-box-text">安全事件數</span>
+                    <span class="info-box-number" id="personnelIncidentsCount"></span>
                   </div>
                 </div>
               </div>
@@ -121,25 +143,43 @@
         <!-- 第二列 -->
         <div class="row">
           <div class="col-md-4">
-            <div class="card ">
+            <div class="card">
               <div class="card-header"><h3 class="card-title">關鍵工種清單</h3></div>
-              <div class="card-body">
-                <ul>
-                  <li>ME</li>
-                  <li>GC</li>
-                </ul>
+              <div class="card-body table-responsive p-0">
+                <table class="table table-bordered table-sm">
+                  <thead>
+                    <tr>
+                      <th>工種名稱</th>
+                      <th>工種代碼</th>
+                      <th>經驗年資</th>
+                      <th>主要工種</th>
+                    </tr>
+                  </thead>
+                  <tbody id="jobTypesTableBody">
+                    <!-- JS will populate this -->
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
           <div class="col-md-4">
             <div class="card">
               <div class="card-header"><h3 class="card-title">安全事件清單</h3></div>
-              <div class="card-body">
-                <ul>
-                  <li>2024/10/12 - 工作中跌倒</li>
-                  <li>2025/01/05 - 高處未繫安全帶</li>
-                  <li>2025/03/22 - 設備誤操作</li>
-                </ul>
+              <div class="card-body table-responsive p-0">
+                <table class="table table-bordered table-sm">
+                  <thead>
+                    <tr>
+                      <th>事件日期</th>
+                      <th>類型</th>
+                      <th>嚴重等級</th>
+                      <th>描述</th>
+                      <th>狀態</th>
+                    </tr>
+                  </thead>
+                  <tbody id="safetyIncidentsTableBody">
+                    <!-- JS will populate this -->
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
@@ -160,12 +200,21 @@
         <div class="card">
           <div class="card-header"><h3 class="card-title">專業證照紀錄</h3></div>
           <div class="card-body table-responsive p-0">
-            <table class="table table-bordered">
-              <thead><tr><th>證照名稱</th><th>通過日期</th><th>有效日期</th></tr></thead>
-              <tbody>
-                <tr><td>高壓電證照 <span class="badge badge-danger">已失效</span></td><td>2021/06/01</td><td>2023/06/01</td></tr>
-                <tr><td>低壓操作證照</td><td>2022/09/10</td><td>2025/09/10</td></tr>
-                <tr><td>高空作業證照</td><td>2023/03/15</td><td>2026/03/15</td></tr>
+            <table class="table table-bordered table-sm">
+              <thead>
+                <tr>
+                  <th>證照名稱</th>
+                  <th>通過日期</th>
+                  <th>有效日期</th>
+                  <th>狀態</th>
+                  <!-- <th>發證單位</th> --> <!-- Optional, can be added if data exists -->
+                </tr>
+              </thead>
+              <tbody id="certificationsTableBody">
+                <!-- Static data will be cleared by JavaScript -->
+                <tr><td>高壓電證照 <span class="badge badge-danger">已失效</span></td><td>2021/06/01</td><td>2023/06/01</td><td>已失效</td></tr>
+                <tr><td>低壓操作證照</td><td>2022/09/10</td><td>2025/09/10</td><td>有效</td></tr>
+                <tr><td>高空作業證照</td><td>2023/03/15</td><td>2026/03/15</td><td>有效</td></tr>
               </tbody>
             </table>
           </div>
@@ -189,5 +238,263 @@
     </section>
   </div>
 </div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const personnelId = urlParams.get('id');
+
+    const fieldsToPopulate = {
+        'personnelName': 'name',
+        'personnelWorkId': 'workId',
+        'personnelMainCompany': 'mainCompanyName',
+        'personnelSubCompany': 'subCompanyName',
+        'personnelJobTitle': 'jobTitle', // Assuming jobTitle is the field for "職務類別"
+        'personnelIdNumber': 'idNumber',
+        'personnelDepartment': 'departmentName', // Assuming departmentName
+        'personnelCurrentStatus': 'currentStatus',
+        'personnelTsmcStartDate': 'tsmcStartDate',
+        'personnelGender': 'gender',
+        'personnelDateOfBirth': 'dateOfBirth',
+        'personnelNationality': 'nationality',
+        'personnelContactNumber': 'contactNumber',
+        'personnelEmail': 'email',
+        'personnelAddress': 'address',
+        'personnelBloodType': 'bloodType',
+        'personnelEmergencyContactName': 'emergencyContactName',
+        'personnelEmergencyContactPhone': 'emergencyContactPhone',
+        'personnelEmploymentType': 'employmentType',
+        'personnelSafetyRecordSummary': 'safetyRecordSummary', // This might be a summary string
+        'personnelRemarks': 'remarks',
+        'personnelHealthGrade': 'healthGrade', // This might be part of healthRecords or similar
+        // Photo and badge are handled separately
+    };
+
+    function setText(id, value) {
+        const element = document.getElementById(id);
+        if (element) {
+            element.textContent = value !== null && value !== undefined ? value : 'N/A';
+        } else {
+            console.warn('Element with ID ' + id + ' not found.');
+        }
+    }
+
+    function formatDate(dateString) {
+        if (!dateString) return 'N/A';
+        try {
+            const date = new Date(dateString);
+            // Check if date is valid after parsing
+            if (isNaN(date.getTime())) {
+                 // Try to parse just date part if full ISO string parsing fails or if it's already YYYY-MM-DD
+                const parts = dateString.split('T')[0].split('-');
+                if (parts.length === 3) {
+                    return `${parts[0]}-${parts[1]}-${parts[2]}`;
+                }
+                return '無效日期';
+            }
+            return date.toISOString().split('T')[0];
+        } catch (e) {
+            console.error("Error formatting date:", dateString, e);
+            return '日期格式錯誤';
+        }
+    }
+
+    function calculateAge(dateOfBirth) {
+        if (!dateOfBirth) return 'N/A';
+        try {
+            const birthDate = new Date(dateOfBirth);
+            if (isNaN(birthDate.getTime())) return 'N/A';
+            const today = new Date();
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const m = today.getMonth() - birthDate.getMonth();
+            if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+            return age >= 0 ? age : 'N/A';
+        } catch (e) {
+            return 'N/A';
+        }
+    }
+
+    if (!personnelId) {
+        document.getElementById('content-wrapper').innerHTML = '<div class="container-fluid pt-3"><div class="alert alert-danger">錯誤：URL中未提供人員ID。</div></div>';
+        return;
+    }
+
+    fetch(`/api/personnel/${personnelId}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Network response was not ok: ${response.status} ${response.statusText}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (!data) {
+                throw new Error('No data received for personnel ID: ' + personnelId);
+            }
+
+            // Populate text fields
+            for (const id in fieldsToPopulate) {
+                const dataKey = fieldsToPopulate[id];
+                if (id === 'personnelTsmcStartDate' || id === 'personnelDateOfBirth') {
+                    setText(id, formatDate(data[dataKey]));
+                } else {
+                    setText(id, data[dataKey]);
+                }
+            }
+
+            // Age
+            setText('personnelAge', calculateAge(data.dateOfBirth));
+
+            // Profile Photo
+            const photoElement = document.getElementById('personnelProfilePhoto');
+            if (photoElement && data.profilePhotoPath) {
+                photoElement.src = data.profilePhotoPath;
+            } else if (photoElement) {
+                photoElement.src = 'https://via.placeholder.com/120/CCCCCC?text=No+Image'; // Default/placeholder
+            }
+
+            // Status Badge
+            const statusBadge = document.getElementById('personnelStatusBadge');
+            if (statusBadge && data.currentStatus) {
+                statusBadge.textContent = data.currentStatus;
+                // Basic styling for the badge based on status - can be expanded
+                if (data.currentStatus === '在職' || data.currentStatus === 'Active') {
+                    statusBadge.className = 'badge badge-success';
+                } else if (data.currentStatus === '離職' || data.currentStatus === 'Inactive') {
+                    statusBadge.className = 'badge badge-danger';
+                } else {
+                    statusBadge.className = 'badge badge-secondary';
+                }
+            }
+
+
+            // Info Boxes
+            // Seniority (assuming direct properties seniorityYears and seniorityMonths)
+            if (data.seniorityYears !== undefined && data.seniorityMonths !== undefined) {
+                setText('personnelSeniority', `${data.seniorityYears}年 ${data.seniorityMonths}月`);
+            } else {
+                 setText('personnelSeniority', 'N/A'); // Fallback if properties don't exist
+            }
+
+            setText('personnelCertsCount', data.certifications ? data.certifications.length : 0);
+            setText('personnelIncidentsCount', data.safetyIncidents ? data.safetyIncidents.length : 0);
+            // Note: Health Grade might need different handling if it's an object or needs lookup.
+            // Assuming 'healthGrade' is a direct property for now based on fieldsToPopulate.
+            // If 'healthGrade' from DTO is an object, you might need data.healthGrade.grade or similar.
+            // For now, it uses the generic setText which expects a direct value.
+
+            // Populate Job Types Table
+            populateJobTypesTable(data.jobTypes);
+
+            // Populate Certifications Table
+            populateCertificationsTable(data.certifications);
+
+            // Populate Safety Incidents Table
+            populateSafetyIncidentsTable(data.safetyIncidents);
+
+        })
+        .catch(error => {
+            console.error('Failed to load personnel details:', error);
+            const contentWrapper = document.querySelector('.content-wrapper .container-fluid');
+            if (contentWrapper) {
+                contentWrapper.innerHTML = `<div class="alert alert-danger">無法載入人員資料： ${error.message}</div>`;
+            } else {
+                // Fallback if specific container not found
+                document.body.innerHTML = `<h1>Error</h1><p>無法載入人員資料： ${error.message}</p>`;
+            }
+        });
+
+    function populateJobTypesTable(jobTypes) {
+        const tableBody = document.getElementById('jobTypesTableBody');
+        if (!tableBody) return;
+        tableBody.innerHTML = ''; // Clear existing rows
+        if (jobTypes && jobTypes.length > 0) {
+            jobTypes.forEach(jt => {
+                const row = tableBody.insertRow();
+                row.insertCell().textContent = jt.jobTypeName || 'N/A';
+                row.insertCell().textContent = jt.jobTypeCode || 'N/A';
+                row.insertCell().textContent = jt.experienceYears !== null && jt.experienceYears !== undefined ? `${jt.experienceYears} 年` : 'N/A';
+                row.insertCell().textContent = jt.isPrimary ? '是' : '否';
+            });
+        } else {
+            const row = tableBody.insertRow();
+            const cell = row.insertCell();
+            cell.colSpan = 4;
+            cell.textContent = '無關鍵工種資料';
+            cell.style.textAlign = 'center';
+        }
+    }
+
+    function populateCertificationsTable(certifications) {
+        const tableBody = document.getElementById('certificationsTableBody');
+        if (!tableBody) return;
+        tableBody.innerHTML = ''; // Clear existing rows
+        if (certifications && certifications.length > 0) {
+            certifications.forEach(cert => {
+                const row = tableBody.insertRow();
+                row.insertCell().textContent = cert.certificationName || 'N/A';
+                row.insertCell().textContent = formatDate(cert.issueDate);
+                row.insertCell().textContent = formatDate(cert.expiryDate);
+                row.insertCell().textContent = cert.status || 'N/A'; // Assuming status is a string
+            });
+        } else {
+            const row = tableBody.insertRow();
+            const cell = row.insertCell();
+            cell.colSpan = 4; // Adjusted for new 'Status' column
+            cell.textContent = '無專業證照紀錄';
+            cell.style.textAlign = 'center';
+        }
+    }
+
+    // Adapting formatDate to formatDateTime, or use formatDate if time part is not critical
+    function formatDateTime(dateTimeString) {
+        if (!dateTimeString) return 'N/A';
+        try {
+            const date = new Date(dateTimeString);
+            if (isNaN(date.getTime())) { // Invalid date
+                 // Try to parse just date part if full ISO string parsing fails
+                const parts = dateTimeString.split('T')[0].split('-');
+                if (parts.length === 3) { // Check if it's at least YYYY-MM-DD
+                    return `${parts[0]}-${parts[1]}-${parts[2]}`; // Return only date part
+                }
+                return '無效日期時間';
+            }
+            // Return YYYY-MM-DD HH:MM if time is significant, otherwise just date
+            const yyyy = date.getFullYear();
+            const mm = String(date.getMonth() + 1).padStart(2, '0');
+            const dd = String(date.getDate()).padStart(2, '0');
+            // const hh = String(date.getHours()).padStart(2, '0');
+            // const min = String(date.getMinutes()).padStart(2, '0');
+            // return `${yyyy}-${mm}-${dd} ${hh}:${min}`;
+            return `${yyyy}-${mm}-${dd}`; // For now, just date part
+        } catch (e) {
+            console.error("Error formatting date-time:", dateTimeString, e);
+            return '日期時間格式錯誤';
+        }
+    }
+
+    function populateSafetyIncidentsTable(safetyIncidents) {
+        const tableBody = document.getElementById('safetyIncidentsTableBody');
+        if (!tableBody) return;
+        tableBody.innerHTML = ''; // Clear existing rows
+        if (safetyIncidents && safetyIncidents.length > 0) {
+            safetyIncidents.forEach(incident => {
+                const row = tableBody.insertRow();
+                row.insertCell().textContent = formatDateTime(incident.incidentDate);
+                row.insertCell().textContent = incident.incidentType || 'N/A';
+                row.insertCell().textContent = incident.severityLevel || 'N/A'; // Assuming string
+                row.insertCell().textContent = incident.description || 'N/A';
+                row.insertCell().textContent = incident.status || 'N/A'; // Assuming string
+            });
+        } else {
+            const row = tableBody.insertRow();
+            const cell = row.insertCell();
+            cell.colSpan = 5;
+            cell.textContent = '無安全事件紀錄';
+            cell.style.textAlign = 'center';
+        }
+    }
+});
+</script>
 </body>
 </html>
