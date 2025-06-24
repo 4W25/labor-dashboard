@@ -10,6 +10,36 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    #userInfoDialog {
+      color: #333; /* Ensure text color is dark for dialog content */
+    }
+    #userInfoDialog .user-profile-card {
+        margin: 0; /* Remove margin from userinfo.html as it's now in a dialog */
+        box-shadow: none; /* Remove shadow from userinfo.html as dialog has its own */
+        padding: 0; /* Remove padding as dialog has its own */
+    }
+    #userInfoDialog .lockscreen-footer {
+        color: #6c757d; /* Match typical footer muted color */
+        font-size: 0.9em;
+    }
+    #userInfoDialog a {
+        color: #007bff; /* Standard link color */
+    }
+    #userInfoDialog a:hover {
+        color: #0056b3;
+    }
+    /* Ensure button in dialog is styled correctly */
+    #userInfoDialog .btn-primary {
+      background-color: #007bff;
+      border-color: #007bff;
+      color: #fff !important; /* Override any inherited color */
+    }
+     #userInfoDialog .btn-primary:hover {
+      background-color: #0056b3;
+      border-color: #0056b3;
+    }
+  </style>
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -25,12 +55,17 @@
     </ul>
     <ul class="navbar-nav ml-auto">
       <li class="nav-item">
-        <a class="nav-link" href="userinfo.html" title="使用者資訊">
+        <a class="nav-link" href="#" id="user-icon-link" title="使用者資訊">
           <i class="fas fa-user-circle"></i>
         </a>
       </li>
     </ul>
   </nav>
+
+  <!-- User Info Dialog -->
+  <div id="userInfoDialog" style="display: none; position: absolute; background-color: #fff; border: 1px solid #ccc; box-shadow: 0 2px 10px rgba(0,0,0,0.2); z-index: 1050; padding: 15px; border-radius: 0.25rem; min-width: 300px;">
+    <!-- Content from userinfo.html will be loaded here -->
+  </div>
 
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
@@ -196,6 +231,100 @@
         }
       }
     }
+  });
+
+  $(document).ready(function() {
+    const userInfoDialog = $('#userInfoDialog');
+    const userIconLink = $('#user-icon-link');
+    let userInfoContentLoaded = false;
+
+    // Function to load userinfo.html content
+    async function loadUserInfoContent() {
+      if (userInfoContentLoaded) return; // Load only once
+
+      try {
+        const response = await fetch('userinfo.html');
+        const text = await response.text();
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(text, 'text/html');
+
+        // Extract specific parts from userinfo.html
+        const userProfileCard = doc.querySelector('.user-profile-card');
+        const logoutLinkDiv = doc.querySelector('.text-center[style*="margin-top: 20px;"]'); // The "或登出" link
+        const footer = doc.querySelector('.lockscreen-footer');
+
+        let contentToInject = '';
+        if (userProfileCard) {
+          // Modify links within the fetched content to close the dialog
+          userProfileCard.querySelectorAll('a[href="1.html"]').forEach(link => {
+            link.href = '#'; // Prevent navigation
+            link.addEventListener('click', function(e) {
+              e.preventDefault();
+              userInfoDialog.hide();
+            });
+          });
+          contentToInject += userProfileCard.outerHTML;
+        }
+        if (logoutLinkDiv) {
+           logoutLinkDiv.querySelectorAll('a[href="0.html"]').forEach(link => {
+            link.href = '#'; // Prevent navigation
+            link.addEventListener('click', function(e) {
+              e.preventDefault();
+              userInfoDialog.hide();
+              // Optionally, redirect to actual logout page: window.location.href = "0.html";
+            });
+          });
+          contentToInject += logoutLinkDiv.outerHTML;
+        }
+        if (footer) {
+          contentToInject += footer.outerHTML;
+        }
+
+        userInfoDialog.html(contentToInject);
+        userInfoContentLoaded = true;
+      } catch (error) {
+        console.error('Failed to load user info content:', error);
+        userInfoDialog.html('<p>無法載入使用者資訊。</p>');
+      }
+    }
+
+    // Event listener for user icon click
+    userIconLink.on('click', async function(e) {
+      e.preventDefault();
+      await loadUserInfoContent(); // Ensure content is loaded
+
+      const iconRect = userIconLink[0].getBoundingClientRect();
+      const bodyRect = document.body.getBoundingClientRect(); // Used for calculating right offset relative to viewport
+
+      // Position dialog below the icon
+      // iconRect.bottom is the distance from the top of the viewport to the bottom of the icon
+      // window.scrollY is added in case the body is scrollable and the navbar is not fixed
+      // However, AdminLTE's main-header is typically position:fixed or sticky, so scrollY might not be needed
+      // For a fixed/sticky header, iconRect.bottom is already the correct viewport-relative position.
+      let topPosition = iconRect.bottom + 5; // 5px margin below the icon
+
+      // Align dialog's right edge with icon's right edge.
+      // (Viewport width - icon's right offset from left) = icon's right offset from right of viewport
+      let rightPosition = window.innerWidth - iconRect.right;
+      // If the dialog has a different width than the icon, this aligns their right edges.
+      // If we wanted to align the dialog's right edge with the viewport's right edge (like some notifications)
+      // we would use a fixed value e.g. right: '15px'.
+      // The current approach makes it align with the icon.
+
+      userInfoDialog.css({
+        top: topPosition + 'px', // This is relative to the viewport if header is fixed
+        right: rightPosition + 'px',
+        left: 'auto' // Ensure left is not set if we are setting right
+      });
+      userInfoDialog.toggle(); // Show or hide dialog
+    });
+
+    // Event listener for closing dialog when clicking outside
+    $(document).on('click', function(e) {
+      if (userInfoDialog.is(':visible') && !userIconLink[0].contains(e.target) && !userInfoDialog[0].contains(e.target)) {
+        userInfoDialog.hide();
+      }
+    });
   });
 </script>
 </body>
